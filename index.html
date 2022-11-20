@@ -1,0 +1,85 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>City Weather Watch</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="quotes.css" />
+
+  </head>
+  <body>
+    <h1>BREWERY</h1>
+    <div id="h2">
+ <h2>Welcome to finding top breweries around the country! You type in the state you want to find the number 1 brewery. 
+  You will find the address for this brewery. Enjoy! </h2>
+    </div>
+
+    <br>
+            <label for="city"> Search </label
+          ><input
+            type="text"
+            id="city"
+            name="city"
+            value=""
+            maxlength="100"
+            size="20"
+          />
+          <button id="button" onclick="getData()">State Search</button>  
+    </div>
+  
+    <br>
+    <br>
+
+    <div id="wrapper">
+
+    <script>
+      const process = (data) => {
+        console.log(data);
+        let weatherConditions = $(`<p> Your brewery is, ${data[0].name}, the address is ${data[0].street} located in  ${data[0].city} ${data[0].state}. 
+          The end.</p>`)
+
+          $(".report").append(weatherConditions);
+      
+      };
+      
+      const getData = () => {
+        let state = $("#city").val();
+        $.ajax({
+          type: "GET",
+          url: "https://api.openbrewerydb.org/breweries?by_state=" + state,
+          dataType: "json",
+          success: function (result, status, xhr) {
+            process(result);
+          },
+          error: function (xhr, status, error) {
+            alert(
+              "Result: " +
+                status +
+                " " +
+                error +
+                " " +
+                xhr.status +
+                " " +
+                xhr.statusText
+            );
+          },
+        });
+      };
+
+
+      const setUp = ()=>{
+     let report = $(`<div class="report"> <h1>Report:</h1><ul></ul> </div>`);
+        $("#wrapper").append(report);
+      }
+      $(document).ready(setUp);
+
+
+    </script>
+
+    </div>
+  </body>
+</html>
